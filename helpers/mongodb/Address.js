@@ -6,7 +6,6 @@ const Address = new mongoose.Schema({
     type: String,
     maxLength: 256,
     trim: true,
-    // try
   },
   country: DEFAULT_VALIDATION,
   city: DEFAULT_VALIDATION,
