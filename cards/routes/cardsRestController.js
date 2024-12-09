@@ -43,18 +43,36 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/my-cards", auth, async (req, res) => {
+// router.get("/my-cards", auth, async (req, res) => {
+//   try {
+//     const userInfo = req.user;
+//     if (!userInfo.isBusiness) {
+//       return handleError(res, 403, "Only business user can get my card");
+//     }
+//     let card = await getMyCards(userInfo._id);
+//     res.send(card);
+//   } catch (error) {
+//     handleError(res, error.status || 400, error.message);
+//   }
+// });
+const mongoose = require('mongoose');
+
+router.get("/my-posts", auth, async (req, res) => {
   try {
     const userInfo = req.user;
-    if (!userInfo.isBusiness) {
-      return handleError(res, 403, "Only business user can get my card");
-    }
-    let card = await getMyCards(userInfo._id);
-    res.send(card);
+    console.log(userInfo._id);
+
+    // המרה של userInfo._id ל-ObjectId
+    const userIdObject = mongoose.Types.ObjectId(userInfo._id);
+
+    let posts = await getMyPosts(userIdObject);
+    res.send(posts);
   } catch (error) {
+    console.error("Error fetching posts:", error);
     handleError(res, error.status || 400, error.message);
   }
 });
+
 
 router.get("/:id", async (req, res) => {
   try {
